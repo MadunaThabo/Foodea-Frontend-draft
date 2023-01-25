@@ -45,7 +45,37 @@
         <button class="btn btn-primary">Fridge</button>
       </div>
     </div>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <h1 class="heading">Food For The Day</h1>
+    <div id="recipe-container" style="background-image: <%=image%>;"></div>
+    <script type="text/template" id="recipe-template">
+        <!-- <h1 class="todaysRecipeTitle"><%= title %></h1> -->
+        <!-- <ul>
+            <% _.each(ingredients, function(ingredient) { %>
+                <li><%= ingredient %></li>
+            <% }); %>
+        </ul> -->
+        <!-- <p><%= instructions %></p> -->
+        <!-- <img src='<%=image%>' class="todaysRecipe"> -->
+
+
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <img src="<%=image%>" >
+            <h1 class="text-center"><%= title %></h1>
+          </div>
+          <div class="col-md-4">
+            <img src="<%=image%>" >
+            <h1 class="text-center"><%= title %></h1>
+          </div>
+          <div class="col-md-4">
+            <img src="<%=image%>" >
+            <h1 class="text-center"><%= title %></h1>
+          </div>
+        </div>
+        
+    </script> 
+
+    <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -70,7 +100,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
       </a>
-    </div>
-    <!-- <script type="module" src="src/app.js"></script> -->
+    </div> -->
+    <script type="module" src="src/app.js"></script>
   </body>
 </html>

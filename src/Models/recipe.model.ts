@@ -5,7 +5,8 @@ export class RecipeModel extends Backbone.Model{
         return {
             title: '',
             ingredients: [],
-            instructions: ''
+            instructions: '',
+            image: ''
         }
     }
 }

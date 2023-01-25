@@ -1,13 +1,21 @@
 /* navigation bar */
 
+
+#body {
+  background-color: #000505;
+  /* color: white; */
+}
 nav {
-    background-color: #f2f2f2;
-    padding: 20px;
-  }
+  background-color: #000505;
+  color: white;
+  padding: 20px;
+}
   
 .nav-container{
-    display: flex;
-    justify-content: center;
+  background-color: #000505;
+  display: flex;
+  justify-content: center;
+  color: white;
 }
   
 nav ul {
@@ -23,13 +31,15 @@ nav li {
 
 nav a {
   display: block;
-  color: black;
+  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  font-weight: bold;
 }
 
 nav form {
+  padding-left: 12px;
   float: right;
 }
 
@@ -51,7 +61,8 @@ nav button[type="submit"] {
 }
   
 .heading{
-  background-color: brown;
+  background-color: #12263A;
+  color: white;
   width: 100%;
   height: 100px;
   display: flex;
@@ -61,6 +72,7 @@ nav button[type="submit"] {
 
 .heading.h1{
   font-style: italic;
+  padding-bottom: 0%;
 }
 
 #top {
@@ -79,16 +91,61 @@ nav button[type="submit"] {
   justify-content: space-between;
   align-items: center;
   padding: 100px 0;
-  /* background-color: brown; */
+  background-color: #BFCDE0;
 }
 
 .column {
   width: 30%;
   text-align: center;
   padding: 10px;
+  border-radius: 2px;
 }
   
 .d-block.w-100 {
   height: 400px; /* Change this value to whatever height you want */
 }
+
+.todaysRecipeTitle{
+  font-size: 30px;
+  font-weight: bold;
+  color: #12263A;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  background-color: #5D5D81;
+  height: 50px;
+}
+
+.recipe-container{
+  /* background-image: url('../images/Godfathers-Taco-Pizza-Copycat.jpg'); */
+  width: 100vw;
+  height:400px;
+  background-size: cover;
+  background-position:center center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-top: 0%;
+}
+
+.col-md-4 {
+  /* border-radius: 50px; */
+  /* background-color: #5D5D81; */
+  padding-left: 20px;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+
+}
+
+.col-md-4 img{
+  border-radius: 50px;
+  padding-left: 30px;
+  padding-top: 30px;
+}
+
+.img-fluid {
+  width: 70%;
+}
+
 

@@ -12,16 +12,16 @@
 </head>
 <body>
     <script type="module" src="src/app.js"></script>
+    <div id="recipe-container"></div>
     <script type="text/template" id="recipe-template">
-        
-        <h1><%= title %></h1>
+        <h1 class="todaysRecipeTitle"><%= title %></h1>
         <ul>
             <% _.each(ingredients, function(ingredient) { %>
                 <li><%= ingredient %></li>
             <% }); %>
         </ul>
         <p><%= instructions %></p>
-    </script>
-    
+        <img src='<%=image%>'>
+    </script>    
 </body>
 </html>

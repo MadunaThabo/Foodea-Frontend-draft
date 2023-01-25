@@ -80,16 +80,24 @@ export class RecipeService extends Model{
     }
 
     getRandomRecipe(n: number){
-        // url: any = 'https://localhost:7008/api/users/random';
-        // fetchData() {
-        //   this.fetch({
-        //     dataType: 'json'
-        //   }).then(() => {
-        //     console.log(this.toJSON());
-        //   });
-        // }
-        return {"confusion": n}
+        const url = 'https://localhost:7008/api/Users/random?number=' + n;
+        console.log('url', url)
+        return fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(recipe => {
+            return recipe as IRecipe[];
+        })
+        .catch(error => {
+            console.error(error);
+        });
     }
+
 }
 
 var recipe = new RecipeService()
