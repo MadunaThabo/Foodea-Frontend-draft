@@ -5,14 +5,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
   </head>
   <body>
     <nav>
         <div class="nav-container">
           <ul>
-            <li><a href="index.html">Home</a></li>
-            <!-- <li><a href="pages/random.html">Random</a></li> -->
+            <li><a href="../index.html">Home</a></li>
+            <!-- <li><a href="random.html">Random</a></li> -->
             <li><a href="example.html">Ingredient</a></li>
             <li><a href="#recipes">Recipes</a></li>
             <li>
@@ -32,7 +32,7 @@
       <div class="column">
         <h2>Get a Random Recipe</h2>
         <p>Get a Random Recipe</p>
-        <button class="btn btn-primary" onclick="">Get</button>
+        <button class="btn btn-primary">Get</button>
       </div>
       <div class="column">
         <h2>Find More Recipes</h2>
@@ -45,14 +45,10 @@
         <button class="btn btn-primary">Fridge</button>
       </div>
     </div>
-    <h1 class="heading" style="margin-bottom: 0px;">Food For The Day</h1>
-    <div id="recipe-container"></div>
+    
+
+    <!-- <div id="recipe-container"></div>
     <script type="text/template" id="recipe-template">
-      var home = new HomePage()
-      $(document).on('click', '.view-recipe-btn', function() {
-        let recipeId = $(this).data('recipe-id');
-        home.viewRecipe(recipeId);
-      });
       <div class="row justify-content-center">
         <% _.each(recipes, function(recipe) { %>
           <div class="col-md-4">
@@ -61,34 +57,25 @@
           </div>
         <% }); %>
       </div>
-      <!-- event listener for the cards -->
-      
-    </script> 
-
-    <div class="card-deck">
-      <div class="card" onclick="home.viewRecipe(1)">
-        <img src="/images/foodEmos.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Card 1</h5>
-          <p class="card-text">Some quick example text to build on the card title.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="/images/foodEmos.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Card 2</h5>
-          <p class="card-text">Some quick example text to build on the card title.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="/images/foodEmos.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Card 3</h5>
-          <p class="card-text">Some quick example text to build on the card title.</p>
-        </div>
-      </div>
-    </div>
+    </script>  -->
     
-    <!-- <script type="module" src="src/app.js"></script> -->
+    <div id="recipe-container"></div>
+    <script type="text/template" id="recipe-template">
+      <div class="container"><h1 class="heading" style="margin-bottom: 0px;"> <%= title %> </h1>
+        <h2>Ingredients:</h2>
+        <ol>
+          <% _.each(ingredients, function(ingredient) { %>
+            <li><%= ingredient %></li>
+          <% }); %>
+        </ol>
+        <h2>Instructions:</h2>
+        <ol>
+          <% _.each(instructions, function(instruction) { %>
+            <li><%= instruction %></li>
+          <% }); %>
+        </ol>
+      </div>
+    </script>
+    <script type="module" src="../src/app.ts"></script>
   </body>
 </html>
