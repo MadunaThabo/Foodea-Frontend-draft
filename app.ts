@@ -1,16 +1,11 @@
 console.log("The app works");
 
-import { Model } from 'backbone';
+import Backbone, { Model } from 'backbone';
 import {IRecipe, RecipeService} from './src/services/Recipe'
 import { RecipeCollection } from './src/collection/recipe.collection';
-import { RecipeModel } from './src/models/recipe.model';
-import { RecipeView } from './src/views/recipe.view';
-import { RecipeViewPage } from './src/pages/recipe-view-page/recipe-view-page';
 import $ from 'jquery';
 import _ from 'underscore';
-
-
-class HomePage extends Model {
+class HomePageView extends Backbone.View {
   searchString: string = ''
   recipesForTheDay: IRecipe[] = []
   recipeService: RecipeService;
@@ -20,41 +15,43 @@ class HomePage extends Model {
     super();
     this.recipeService = new RecipeService();
     this.$el = $();
+
+    this.getRandomRecipe(3)
   }
 
   async getRandomRecipe(n: number) {
     console.log('getRandomRecipe', n)
     let recipes: any = await this.recipeService.getRandomRecipe(n);
     let recipeCollection = new RecipeCollection(recipes.recipes);
-    let recipeCollectionView = new RecipeView({
-      el: '#recipe-container',
-      collection: recipeCollection
-    });
-
+    let recipeCollectionView = this;
     recipeCollectionView.render();
-    let recipeTemplate = _.template($('#recipe-template').html());
+    let recipeTemplate = _.template($('#recipe-card-template').html());
     let recipeHTML = recipeTemplate({recipes: recipeCollection.toJSON()});
-    let recipeContainer = document.getElementById('recipe-container');
+    let recipeContainer = document.getElementById('recipe-cards');
     if(recipeContainer) recipeContainer.innerHTML = recipeHTML;
   }
 
-  viewRecipe(recipeIndex: number){
-    console.log('viewRecipe', recipeIndex)
-    let recipe = this.recipesForTheDay[recipeIndex];
-    // save recipe to local storage
-    localStorage.setItem('recipeToView',JSON.stringify(recipe));
-    // let recipeViewPage = new RecipeViewPage();
-    // recipeViewPage.showRecipe(recipe);
-    //navigate to recipe view page at url: 'pages/recipe-view-page/recipe-view-page.html'
-    window.location.href = 'pages/recipe-view-page/recipe-view-page.html'
+  events() {
+    return {
+      'click .card': 'openRecipeView'
+    };
   }
 
+  openRecipeView(e: JQuery.Event) {
+    console.log('recipe clicked', e);
+    let recipeId = $((e as any).currentTarget).data('recipe-id');
+    let recipe = this.collection.get(recipeId);
+    // Code to change the body of the html file
+  }
+
+  render() {
+    if(!this.collection) return this;
+    let recipeTemplate = _.template($('#recipe-card-template').html());
+    let recipeHTML = recipeTemplate({recipes: this.collection.toJSON()});
+    let recipeContainer = document.getElementById('recipe-cards');
+    if(recipeContainer) recipeContainer.innerHTML = recipeHTML;
+    return this;
+  }
 }
-let home = new HomePage()
-// home.getRandomRecipe(3)
-console.log('testing testing')
-// document.getElementById("view-recipe-btn").addEventListener("click", function(){
-//   home.viewRecipe(2);
-// });
 
-
+let home = new HomePageView()

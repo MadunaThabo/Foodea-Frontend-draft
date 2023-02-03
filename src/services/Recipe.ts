@@ -80,7 +80,7 @@ export class RecipeService extends Model{
     }
 
     getRandomRecipe(n: number){
-        const url = 'https://localhost:7008/api/Users/random?number=' + n;
+        const url = 'https://localhost:7008/api/Recipes/random?number=' + n;
         console.log('url', url)
         return fetch(url, {
             method: 'GET',
@@ -91,10 +91,11 @@ export class RecipeService extends Model{
         })
         .then(response => response.json())
         .then(recipe => {
+            console.log('recipe', recipe)
             return recipe as IRecipe[];
         })
         .catch(error => {
-            console.error(error);
+            console.error('the error: ',error);
         });
     }
 

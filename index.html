@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
+    <!-- navigation bar -->
     <nav>
         <div class="nav-container">
           <ul>
@@ -26,8 +27,9 @@
     </nav>
       
     <div id="top">
-      <div class="heading"> <h1>Home</h1> </div>
+      <div class="heading"> <h1>FOODEA</h1> </div>
     </div>
+    <!-- three options row -->
     <div id="bottom">
       <div class="column">
         <h2>Get a Random Recipe</h2>
@@ -45,50 +47,31 @@
         <button class="btn btn-primary">Fridge</button>
       </div>
     </div>
+
     <h1 class="heading" style="margin-bottom: 0px;">Food For The Day</h1>
-    <div id="recipe-container"></div>
-    <script type="text/template" id="recipe-template">
-      var home = new HomePage()
-      $(document).on('click', '.view-recipe-btn', function() {
-        let recipeId = $(this).data('recipe-id');
-        home.viewRecipe(recipeId);
-      });
-      <div class="row justify-content-center">
+    
+    <div id="recipe-cards"></div>
+    <script type="text/template" id="recipe-card-template">
+      <div class="card-deck">
         <% _.each(recipes, function(recipe) { %>
-          <div class="col-md-4">
-            <img src="<%=recipe.image%>" >
-            <h1 class="text-center"><%= recipe.title %></h1>
+          <div class="card">
+            <img src="<%=recipe.image%>" class="card-img-top" alt="Card image">
+            <div class="card-body">
+              <h5 class="card-title"><%= recipe.title %></h5>
+              <p class="card-text"><%= recipe.summary %></p>
+            </div>
           </div>
         <% }); %>
       </div>
-      <!-- event listener for the cards -->
-      
     </script> 
 
-    <div class="card-deck">
-      <div class="card" onclick="home.viewRecipe(1)">
-        <img src="/images/foodEmos.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Card 1</h5>
-          <p class="card-text">Some quick example text to build on the card title.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="/images/foodEmos.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Card 2</h5>
-          <p class="card-text">Some quick example text to build on the card title.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="/images/foodEmos.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Card 3</h5>
-          <p class="card-text">Some quick example text to build on the card title.</p>
-        </div>
-      </div>
-    </div>
+    <script type="text/template" id="recipe-details-template">
+      <h1><%= title %></h1>
+      <img src="<%= image %>" alt="Recipe image">
+      <p><%= summary %></p>
+      <p><%= instructions %></p>
+    </script>
     
-    <!-- <script type="module" src="src/app.js"></script> -->
+    <script type="module" src="app.js"></script>
   </body>
 </html>
