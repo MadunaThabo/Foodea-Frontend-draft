@@ -1,9 +1,9 @@
 import Backbone, { Router } from 'backbone';
-import { IRecipe, RecipeService } from './src/services/recipe.service';
-import { RecipeCollection } from './src/collection/recipe.collection';
 import $ from 'jquery';
 import _ from 'underscore';
-import { RecipeViewPage } from './src/pages/recipe-view-page/recipe-view-page';
+import { RecipeCollection } from '../collection/recipe.collection';
+import { RecipeViewPage } from '../pages/recipe-view-page/recipe-view-page';
+import { IRecipe, RecipeService } from '../services/recipe.service';
 
 export class HomePageView extends Backbone.View {
   collection!: RecipeCollection;
@@ -22,6 +22,7 @@ export class HomePageView extends Backbone.View {
 
   initialize() {
     console.log('initialize');
+    this.render()
   }
 
   async getRandomRecipe(n: number) {
@@ -60,6 +61,7 @@ export class HomePageView extends Backbone.View {
   }
 
   render() {
+    console.log('rendering the home page view');
     let recipeTemplate = _.template($('#recipe-card-template').html());
     let recipeHTML = recipeTemplate({ recipes: this.collection.toJSON() });
     let recipeContainer = document.getElementById('recipe-cards');
@@ -71,10 +73,3 @@ export class HomePageView extends Backbone.View {
     return (inputString.length > maxLength) ? inputString.slice(0, maxLength - 1) + '…' : inputString;
   }
 }
-
-
-
-$(document).ready(function () {
-  let home = new HomePageView();
-  home.delegateEvents();
-});

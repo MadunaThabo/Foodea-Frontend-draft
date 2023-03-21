@@ -1,8 +1,36 @@
 import { Model } from 'backbone';
+import { forEach } from 'underscore';
 
 export interface IRecipe{
     aggregateLikes: number
-    analyzedInstructions: []
+    analyzedInstructions: [
+        {
+            name: string
+            steps: [
+                {
+                    number: number
+                    step: string
+                    ingredients: []
+                    equipment: [
+                        {
+                            id: number,
+                            name: string,
+                            localizedName: string,
+                            image: string,
+                            temperature: {
+                                number: 0,
+                                unit: string
+                            }
+                        }
+                    ]
+                    length: {
+                        number: number
+                        unit: string
+                    }
+                }
+            ]
+        }
+    ]
     cheap: boolean
     cookingMinutes: number
     creditsText: string
@@ -10,7 +38,33 @@ export interface IRecipe{
     dairyFree: boolean
     diets: []
     dishTypes: []
-    extendedIngredients: []
+    extendedIngredients: [
+        {
+            id: 0,
+            aisle: string,
+            image: string,
+            consistency: string,
+            name: string,
+            nameClean: string,
+            original: string,
+            originalName: string,
+            amount: 0,
+            unit: string,
+            meta: [],
+            measures: {
+                us: {
+                    amount: 0,
+                    unitShort: string,
+                    unitLong: string
+                },
+                metric: {
+                    amount: 0,
+                    unitShort: string,
+                    unitLong: string
+                }
+            }
+        }
+    ]
     gaps: string
     glutenFree: boolean
     healthScore: number
@@ -36,6 +90,18 @@ export interface IRecipe{
     veryHealthy: boolean
     veryPopular: boolean
     weightWatcherSmartPoints: number
+    equipment: [
+        {
+            id: number,
+            name: string,
+            localizedName: string,
+            image: string,
+            temperature: {
+                number: 0,
+                unit: string
+            }
+        }
+    ]
 }
 
 export class RecipeService extends Model{
@@ -76,6 +142,7 @@ export class RecipeService extends Model{
             veryHealthy: false,
             veryPopular: false,
             weightWatcherSmartPoints: 0,
+            equipment: [],
         })
     }
 
@@ -92,6 +159,7 @@ export class RecipeService extends Model{
         .then(response => response.json())
         .then(recipe => {
             console.log('recipe', recipe)
+            // this.getEquipment(recipe as IRecipe[]);
             return recipe as IRecipe[];
         })
         .catch(error => {
@@ -99,6 +167,21 @@ export class RecipeService extends Model{
         });
     }
 
+    getRecipeById(id: number){
+        //TODO: Get recipe by it's id
+        return this.getRandomRecipe(1);
+    }
+
+    getEquipment(recipes: IRecipe[]){
+        for (var recipe of recipes) {
+            for(var instruction of recipe.analyzedInstructions){
+                for(var step of instruction.steps){
+                    recipe.equipment.push(...step.equipment);
+                }
+            }
+        }
+    }
+    
 }
 
 var recipe = new RecipeService()

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-framework="backbonejs">
   <head>
     <title>Foodea Website</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
@@ -48,13 +48,15 @@
       </div>
     </div>
 
-    <h1 class="heading" style="margin-bottom: 0px;">Food For The Day</h1>
+    
     
     <div id="recipe-cards"></div>
+    
     <script type="text/template" id="recipe-card-template">
+      <h1 class="heading" style="margin-bottom: 0px;">Food For The Day</h1>
       <div class="card-deck">
         <% _.each(recipes, function(recipe) { %>
-          <div class="card">
+          <div class="card" id="<%=recipe.id%>">
             <img src="<%=recipe.image%>" class="card-img-top" alt="Card image">
             <div class="card-body">
               <h5 class="card-title"><%= recipe.title %></h5>
@@ -65,12 +67,58 @@
       </div>
     </script> 
 
+    <!-- <script type="text/template" id="recipe-details-template">
+      <h1 class="heading" style="margin-bottom: 0px;"><%= recipe.title %></h1>
+      <img src="<%= recipe.image %>" alt="Recipe image">
+      <p><%= recipe.summary %></p>
+      <h2 class="recipe-details-subtitle">Instructions</h2>
+      <ol class="recipe-details-instructions">
+        <% recipe.analyzedInstructions.forEach(function(instructions) { %>
+          <% instructions.steps.forEach(function(step) { %>
+            <li><%= step.step %></li>
+          <% }); %>
+        <% }); %>
+      </ol>
+    </script> -->
+
     <script type="text/template" id="recipe-details-template">
-      <h1><%= title %></h1>
-      <img src="<%= image %>" alt="Recipe image">
-      <p><%= summary %></p>
-      <p><%= instructions %></p>
+      <div class="recipe-details-container">
+        <div class="recipe-details-header">
+          <h1 class="recipe-details-title"><%= recipe.title %></h1>
+          <img class="recipe-details-image" src="<%= recipe.image %>" alt="Recipe image">
+        </div>
+        <div class="recipe-details-content">
+          <p class="recipe-details-summary"><%= recipe.summary %></p>
+          <h2 class="recipe-details-subtitle">Ingredients</h2>
+          <ul class="recipe-details-ingredients">
+            <% recipe.extendedIngredients.forEach(function(ingredient) { %>
+                <li><%= ingredient.original %></li>
+            <% }); %>
+          </ul>
+
+          <h2 class="recipe-details-subtitle">Equipment you may need</h2>
+          <ul class="recipe-details-equipment">
+            <% recipe.analyzedInstructions.forEach(function(instructions) { %>
+              <% instructions.steps.forEach(function(step) { %>
+                <% step.equipment.forEach(function(equipment) { %>
+                  <li><%= equipment.name %></li>
+                <% }) %>
+              <% }); %>
+            <% }); %>
+          </ul>
+          <h2 class="recipe-details-subtitle">Instructions</h2>
+          <ol class="recipe-details-instructions">
+            <% recipe.analyzedInstructions.forEach(function(instructions) { %>
+              <% instructions.steps.forEach(function(step) { %>
+                <li><%= step.step %></li>
+              <% }); %>
+            <% }); %>
+          </ol>
+        </div>
+      </div>
     </script>
+
+    
     
     <script type="module" src="app.js"></script>
   </body>

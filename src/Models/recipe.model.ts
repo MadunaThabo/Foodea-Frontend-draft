@@ -4,7 +4,34 @@ export class RecipeModel extends Backbone.Model{
     defaults() {
         return {
             aggregateLikes: 0 ,
-            analyzedInstructions: [],
+            analyzedInstructions: [
+                {
+                    name: '',
+                    steps: [
+                        {
+                            number: 0,
+                            step: '',
+                            ingredients: [],
+                            equipment: [
+                                {
+                                    id: 0,
+                                    name: '',
+                                    localizedName: '',
+                                    image: '',
+                                    temperature: {
+                                        number: 0,
+                                        unit: ''
+                                    }
+                                }
+                            ],
+                            length: {
+                                number: 0,
+                                unit: ''
+                            }
+                        }
+                    ]
+                }
+            ],
             cheap: false,
             cookingMinutes: 0,
             creditsText: '',
@@ -12,7 +39,33 @@ export class RecipeModel extends Backbone.Model{
             dairyFree: true,
             diets: [],
             dishTypes: [],
-            extendedIngredients: [],
+            extendedIngredients: [
+                {
+                    id: 0,
+                    aisle: '',
+                    image: '',
+                    consistency: '',
+                    name: '',
+                    nameClean: '',
+                    original: '',
+                    originalName: '',
+                    amount: 0,
+                    unit: '',
+                    meta: [],
+                    measures: {
+                        us: {
+                            amount: 0,
+                            unitShort: '',
+                            unitLong: ''
+                        },
+                        metric: {
+                            amount: 0,
+                            unitShort: '',
+                            unitLong: ''
+                        }
+                    }
+                }
+            ],
             gaps: '',
             glutenFree: true,
             healthScore : 0,
@@ -38,6 +91,18 @@ export class RecipeModel extends Backbone.Model{
             veryHealthy: false,
             veryPopular: false,
             weightWatcherSmartPoints: 0,
+            equipment: [
+                {
+                    id: 0,
+                    name: '',
+                    localizedName: '',
+                    image: '',
+                    temperature: {
+                        number: 0,
+                        unit: ''
+                    }
+                }
+            ],
         }
     }
 }

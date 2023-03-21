@@ -150,3 +150,70 @@ nav button[type="submit"] {
 }
 
 
+/* The recipe view page */
+
+
+.recipe-details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.recipe-details-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.recipe-details-title {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 36px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.recipe-details-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.recipe-details-content {
+  text-align: center;
+}
+
+.recipe-details-summary {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.recipe-details-subtitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.recipe-details-ingredients,
+.recipe-details-equipment,
+.recipe-details-instructions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recipe-details-ingredients li,
+.recipe-details-instructions li {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
