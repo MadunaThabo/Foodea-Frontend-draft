@@ -20,14 +20,17 @@ export class RecipeViewPage extends Model {
   }
 
   render(){
-    console.log('rendering');
     let recipeTemplate = _.template($('#recipe-details-template').html());
-    console.log('rendering2', this.recipe);
     let recipeHTML = recipeTemplate({recipe: this.recipe.toJSON()});
-    console.log('rendering3');
-    let recipeContainer = document.getElementById('recipe-cards');
-    console.log('rendering4', recipeContainer);
-    if(recipeContainer) recipeContainer.innerHTML = recipeHTML;
+    let recipeDetailsContainer = document.getElementById('recipe-details');
+    let recipeCardsContainer = document.getElementById('recipe-cards');
+    if(recipeCardsContainer){
+      recipeCardsContainer.hidden = true;
+    }
+    if(recipeDetailsContainer){
+      recipeDetailsContainer.innerHTML = recipeHTML;
+      recipeDetailsContainer.hidden = false;
+    } 
   }
 }
 

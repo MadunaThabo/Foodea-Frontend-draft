@@ -146,26 +146,26 @@ export class RecipeService extends Model{
         })
     }
 
-    getRandomRecipe(n: number){
-        const url = 'https://localhost:7008/api/Recipes/random?number=' + n;
-        console.log('url', url)
-        return fetch(url, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(recipe => {
-            console.log('recipe', recipe)
-            // this.getEquipment(recipe as IRecipe[]);
-            return recipe as IRecipe[];
-        })
-        .catch(error => {
-            console.error('the error: ',error);
+    async getRandomRecipe(n: number): Promise<IRecipe[]> {
+        const url = `https://localhost:7008/api/Recipes/random?number=${n}`;
+      
+        const response = await fetch(url, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-    }
+        if (!response.ok) {
+          console.log(`Server responded with status code ${response.status}`);
+          return [];
+        }
+      
+        const recipe = await response.json();
+        console.log(recipe)
+        return recipe.recipes as IRecipe[];
+      }
+      
 
     getRecipeById(id: number){
         //TODO: Get recipe by it's id
@@ -181,7 +181,25 @@ export class RecipeService extends Model{
             }
         }
     }
-    
+
+    async searchRecipe(query: string): Promise<IRecipe[]> {
+        const url = `https://localhost:7008/api/Recipes/search/${query}`;
+        const response = await fetch(url, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      
+        if (!response.ok) {
+          console.log(`Server responded with status code ${response.status}`);
+          return [];
+        }
+        const recipe = await response.json();
+        return recipe.recipes as IRecipe[];
+      }
+      
 }
 
 var recipe = new RecipeService()

@@ -8,33 +8,35 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
+
     <!-- navigation bar -->
     <nav>
         <div class="nav-container">
           <ul>
-            <li><a href="index.html">Home</a></li>
-            <!-- <li><a href="pages/random.html">Random</a></li> -->
+            <li id="buttonHomePage"><a>Home</a></li>
             <li><a href="example.html">Ingredient</a></li>
             <li><a href="#recipes">Recipes</a></li>
             <li>
                 <form>
-                    <input type="text" placeholder="Search">
-                    <button type="submit">Search</button>
+                    <input  id="searchInput" type="text" placeholder="Search">
+                    <button type="submit" id="buttonSearchRecipe">Search</button>
                 </form>
             </li>
           </ul>
         </div>
     </nav>
-      
+
+    <!-- site name -->
     <div id="top">
       <div class="heading"> <h1>FOODEA</h1> </div>
     </div>
+
     <!-- three options row -->
     <div id="bottom">
       <div class="column">
         <h2>Get a Random Recipe</h2>
         <p>Get a Random Recipe</p>
-        <button class="btn btn-primary" onclick="">Get</button>
+        <button class="btn btn-primary" id="buttonRandomRecipe" >Get</button>
       </div>
       <div class="column">
         <h2>Find More Recipes</h2>
@@ -47,44 +49,79 @@
         <button class="btn btn-primary">Fridge</button>
       </div>
     </div>
-
-    
-    
+    <h1 class="heading" style="margin-bottom: 0px;" >Food For The Day</h1>
+    <!-- card for recipe of the day -->
     <div id="recipe-cards"></div>
-    
     <script type="text/template" id="recipe-card-template">
-      <h1 class="heading" style="margin-bottom: 0px;">Food For The Day</h1>
-      <div class="card-deck">
-        <% _.each(recipes, function(recipe) { %>
-          <div class="card" id="<%=recipe.id%>">
-            <img src="<%=recipe.image%>" class="card-img-top" alt="Card image">
-            <div class="card-body">
-              <h5 class="card-title"><%= recipe.title %></h5>
-              <p class="card-text"><%= recipe.summary %></p>
+      <div class="container-fluid">
+        <div class="row">
+          <% _.each(recipes, function(recipe) { %>
+            <div class="col-md-3">
+              <div class="card" id="<%=recipe.id%>" style="height: 600px; width: 600px">
+                <img src="<%=recipe.image%>" class="card-img-top" alt="Card image">
+                <div class="card-body">
+                  <h5 class="card-title"><%= recipe.title %></h5>
+                  <p class="card-text"><%= truncateSummary(recipe.summary) %></p>
+                </div>
+              </div>
             </div>
-          </div>
-        <% }); %>
-      </div>
-    </script> 
-
-    <!-- <script type="text/template" id="recipe-details-template">
-      <h1 class="heading" style="margin-bottom: 0px;"><%= recipe.title %></h1>
-      <img src="<%= recipe.image %>" alt="Recipe image">
-      <p><%= recipe.summary %></p>
-      <h2 class="recipe-details-subtitle">Instructions</h2>
-      <ol class="recipe-details-instructions">
-        <% recipe.analyzedInstructions.forEach(function(instructions) { %>
-          <% instructions.steps.forEach(function(step) { %>
-            <li><%= step.step %></li>
           <% }); %>
-        <% }); %>
-      </ol>
-    </script> -->
+        </div>
+      </div>
 
+      <!-- <div>
+        <% _.each(recipes, function(recipe) { %>
+        <div class="card bg-dark text-white"  id="<%=recipe.id%>">
+          <img src="<%=recipe.image%>" class="card-img" alt="..." style="height: 500px;">
+          <div class="card-img-overlay" style="color: #000;">
+            <h5 class="card-title"><%= recipe.title %></h5>
+            <p class="card-text"><%= truncateSummary(recipe.summary) %></p>
+            <p class="card-text">Last updated 3 mins ago</p>
+          </div>
+          <% }); %>
+        </div> -->
+    </script>
+
+    <!-- <script type="text/template" id="recipe-card-template">
+      <h1 class="heading" style="margin-bottom: 20px; display: block;">Food For The Day</h1>
+      <div class="card bg-dark text-white">
+        <img src="images\Godfathers-Taco-Pizza-Copycat.jpg" class="card-img" alt="..." style="height: 700px; width: 700px">
+        <div class="card-img-overlay">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <p class="card-text">Last updated 3 mins ago</p>
+        </div>
+      </div>
+    </script> -->
+    
+
+
+    <!-- <div class="card bg-dark text-white">
+      <img src="images\Godfathers-Taco-Pizza-Copycat.jpg" class="card-img" alt="..." style="height: 700px;">
+      <div class="card-img-overlay">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text">Last updated 3 mins ago</p>
+      </div>
+    </div> -->
+
+    <script>
+      function truncateSummary(summary) {
+        if (summary.length > 50) {
+          return summary.substring(0, 100) + "...";
+        } else {
+          return summary;
+        }
+      }
+    </script>
+
+
+    <!-- showing the recipe details -->
+    <div id="recipe-details"></div>
     <script type="text/template" id="recipe-details-template">
+      <h1 class="heading" style="margin-bottom: 0px;"><%= recipe.title %></h1>
       <div class="recipe-details-container">
         <div class="recipe-details-header">
-          <h1 class="recipe-details-title"><%= recipe.title %></h1>
           <img class="recipe-details-image" src="<%= recipe.image %>" alt="Recipe image">
         </div>
         <div class="recipe-details-content">
