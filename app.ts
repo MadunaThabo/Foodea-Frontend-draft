@@ -25,7 +25,7 @@ export class HomePageView extends Backbone.View {
 
   initialize() {
     //get recipes for the day
-    this.getRandomRecipe(2);
+    this.getRandomRecipe(12);
     //set the event listener for home button
     let homeButton = document.getElementById('buttonHomePage');
     if (homeButton) {
@@ -78,8 +78,9 @@ export class HomePageView extends Backbone.View {
     console.log('searchInput', searchInput);
     if (searchInput) {
       if(searchInput.value == ''){
+        console.log('searchInput.value', searchInput.value);
         this.collection = new RecipeCollection(this.recipesForTheDay);
-        this.render();
+        // this.render();
       }
       else{
         this.searchString = searchInput.value;

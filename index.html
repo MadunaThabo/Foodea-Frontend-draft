@@ -56,12 +56,12 @@
       <div class="container-fluid">
         <div class="row">
           <% _.each(recipes, function(recipe) { %>
-            <div class="col-md-3">
-              <div class="card" id="<%=recipe.id%>" style="height: 600px; width: 600px">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="card" id="<%=recipe.id%>">
                 <img src="<%=recipe.image%>" class="card-img-top" alt="Card image">
                 <div class="card-body">
                   <h5 class="card-title"><%= recipe.title %></h5>
-                  <p class="card-text"><%= truncateSummary(recipe.summary) %></p>
+                  <p class="card-text line-clamp"><%= recipe.summary %></p>
                 </div>
               </div>
             </div>

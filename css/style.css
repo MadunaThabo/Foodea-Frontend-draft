@@ -125,6 +125,13 @@ nav button[type="submit"] {
   padding-top: 0%;
 }
 
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
 .col-md-4 img{
   /* border-radius: 70px; */
   padding-left: 30px;
@@ -133,14 +140,6 @@ nav button[type="submit"] {
 
 .img-fluid {
   width: 70%;
-}
-
-.col-md-3 {
-  display: flex;
-  width: 25%;
-  height: 25%;
-  padding-top: 15px;
-  padding-bottom: 15px;
 }
 
 #recipe-cards {
