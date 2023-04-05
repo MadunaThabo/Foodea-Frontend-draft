@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" data-framework="backbonejs">
+
   <head>
     <title>Foodea Website</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
   </head>
+
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">FOODEA.</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" id="buttonHomePage" href="#">Home </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="example.html">Ingredients</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#recipes">Recipes</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" id="buttonSearchRecipe" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
 
     <!-- navigation bar -->
-    <nav>
+    <!-- <nav>
         <div class="nav-container">
           <ul>
             <li id="buttonHomePage"><a>Home</a></li>
@@ -24,12 +51,12 @@
             </li>
           </ul>
         </div>
-    </nav>
+    </nav> -->
 
     <!-- site name -->
-    <div id="top">
+    <!-- <div id="top">
       <div class="heading"> <h1>FOODEA</h1> </div>
-    </div>
+    </div> -->
 
     <!-- three options row -->
     <div id="bottom">
@@ -49,18 +76,19 @@
         <button class="btn btn-primary">Fridge</button>
       </div>
     </div>
-    <h1 class="heading" style="margin-bottom: 0px;" >Food For The Day</h1>
+    <h1 class="heading" id="foodForTheDay">Food For The Day</h1>
+    
     <!-- card for recipe of the day -->
     <div id="recipe-cards"></div>
     <script type="text/template" id="recipe-card-template">
       <div class="container-fluid">
         <div class="row">
           <% _.each(recipes, function(recipe) { %>
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-3 col-sm-6 col-xs-12 recipeCards">
               <div class="card" id="<%=recipe.id%>">
-                <img src="<%=recipe.image%>" class="card-img-top" alt="Card image">
+                <img src="<%=recipe.image%>" class="card-img-top" alt="Card image" onerror="this.onerror=null;this.src='images/placeholder.png';">
                 <div class="card-body">
-                  <h5 class="card-title"><%= recipe.title %></h5>
+                  <h5 class="card-title line-clamp"><%= recipe.title %></h5>
                   <p class="card-text line-clamp"><%= recipe.summary %></p>
                 </div>
               </div>
@@ -68,53 +96,7 @@
           <% }); %>
         </div>
       </div>
-
-      <!-- <div>
-        <% _.each(recipes, function(recipe) { %>
-        <div class="card bg-dark text-white"  id="<%=recipe.id%>">
-          <img src="<%=recipe.image%>" class="card-img" alt="..." style="height: 500px;">
-          <div class="card-img-overlay" style="color: #000;">
-            <h5 class="card-title"><%= recipe.title %></h5>
-            <p class="card-text"><%= truncateSummary(recipe.summary) %></p>
-            <p class="card-text">Last updated 3 mins ago</p>
-          </div>
-          <% }); %>
-        </div> -->
     </script>
-
-    <!-- <script type="text/template" id="recipe-card-template">
-      <h1 class="heading" style="margin-bottom: 20px; display: block;">Food For The Day</h1>
-      <div class="card bg-dark text-white">
-        <img src="images\Godfathers-Taco-Pizza-Copycat.jpg" class="card-img" alt="..." style="height: 700px; width: 700px">
-        <div class="card-img-overlay">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          <p class="card-text">Last updated 3 mins ago</p>
-        </div>
-      </div>
-    </script> -->
-    
-
-
-    <!-- <div class="card bg-dark text-white">
-      <img src="images\Godfathers-Taco-Pizza-Copycat.jpg" class="card-img" alt="..." style="height: 700px;">
-      <div class="card-img-overlay">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        <p class="card-text">Last updated 3 mins ago</p>
-      </div>
-    </div> -->
-
-    <script>
-      function truncateSummary(summary) {
-        if (summary.length > 50) {
-          return summary.substring(0, 100) + "...";
-        } else {
-          return summary;
-        }
-      }
-    </script>
-
 
     <!-- showing the recipe details -->
     <div id="recipe-details"></div>
@@ -122,7 +104,7 @@
       <h1 class="heading" style="margin-bottom: 0px;"><%= recipe.title %></h1>
       <div class="recipe-details-container">
         <div class="recipe-details-header">
-          <img class="recipe-details-image" src="<%= recipe.image %>" alt="Recipe image">
+          <img class="recipe-details-image" src="<%= recipe.image %>" alt="Recipe image" onerror="this.onerror=null;this.src='images/placeholder.png';">
         </div>
         <div class="recipe-details-content">
           <p class="recipe-details-summary"><%= recipe.summary %></p>
@@ -154,8 +136,6 @@
         </div>
       </div>
     </script>
-
-    
     
     <script type="module" src="app.js"></script>
   </body>
