@@ -37,7 +37,6 @@ export class HomePageView extends Backbone.View {
     if (recipeContainer) recipeContainer.innerHTML = recipeHTML;
     this.delegateEvents();
     this.$el.on('click', '.card img', this.openRecipeView.bind(this));
-    
   }
 
   events(): Backbone.EventsHash {
@@ -47,12 +46,9 @@ export class HomePageView extends Backbone.View {
   }
 
   openRecipeView(event: Event) {
-    // console.log('openRecipeView', event);
     const currentTarget = (event as any).currentTarget;
     if (!currentTarget) return;
-    // console.log("currentTarget", currentTarget);
     let recipeId = $(currentTarget).attr('id') as string;
-    // console.log('recipeId', recipeId, '\ncollection', this.collection);
     let recipe = this.collection.get(recipeId);
     if (!recipe) return;
     console.log('recipe', recipe.attributes);

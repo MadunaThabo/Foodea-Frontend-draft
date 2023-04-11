@@ -1,33 +1,35 @@
-// //router to recipe view page
-// import { Router } from 'backbone';
-// import { HomePageView } from './app';
-// import { RecipeModel } from './src/models/recipe.model';
-// import { RecipeViewPage } from './src/pages/recipe-view-page/recipe-view-page';
-// import { IRecipe, RecipeService } from './src/services/Recipe';
+import Backbone from 'backbone';
+import { IngredientsPageView } from './src/pages/recipe-view-page/ingredients-page';
 
-// export class AppRouter extends Router {
-//   routes = {
-//     '': 'HomePage',
-//     'recipe/:id': 'ViewRecipePage'
-//   }
-//   recipeService: RecipeService;
+export class AppRouter extends Backbone.Router {
+    constructor() {
+        super();
+        this.routes = {
+            'ingredients': 'ingredients'
+        };
+        this.initialize();
+    }
 
-//   constructor() {
-//     super();
-//     this.recipeService = new RecipeService();
-//   }
+    initialize() {
+        this.attachEventListeners();
+    }
 
-//   HomePage() {
-//     let home = new HomePageView();
-//   }
+    attachEventListeners() {
+        console.log('Attaching event listeners');
+        let ingredientsLink = document.getElementById('ingredientsLink');
+        if (ingredientsLink) {
+            ingredientsLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                this.navigate('ingredients', {trigger: true});
+            });
+        } else {
+            console.warn('Could not find "ingredientsLink" element.');
+        }
+    }
 
-//   async ViewRecipePage(id: number) {
-//     console.log('recipeView:\n', 'id:', id);
-//     let recipe = await this.recipeService.getRecipeById(id);
-//     console.log('recipe', recipe);
-//     //make the model
-//     let recipeModel = new RecipeModel(recipe);
-//     let recipeViewPage = new RecipeViewPage(recipeModel);
-//     recipeViewPage.render();
-//   }
-// }
+    ingredients() {
+        console.log('Ingredients route hit');
+        let ingredientsPageView = new IngredientsPageView();
+        ingredientsPageView.render();
+    }
+}

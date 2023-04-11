@@ -23,7 +23,7 @@
             <a class="nav-link" id="buttonHomePage" href="#">Home </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="example.html">Ingredients</a>
+            <a class="nav-link" href="/src/pages/recipe-view-page/ingredients-page.html" id="ingredientsLink">Ingredients</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#recipes">Recipes</a>
@@ -76,13 +76,14 @@
         <button class="btn btn-primary">Fridge</button>
       </div>
     </div>
-    <h1 class="heading" id="foodForTheDay">Food For The Day</h1>
+    
     
     <!-- card for recipe of the day -->
     <div id="recipe-cards"></div>
     <script type="text/template" id="recipe-card-template">
       <div class="container-fluid">
         <div class="row">
+          <h1 class="heading" id="foodForTheDay">Food For The Day</h1>
           <% _.each(recipes, function(recipe) { %>
             <div class="col-md-3 col-sm-6 col-xs-12 recipeCards">
               <div class="card" id="<%=recipe.id%>">
@@ -96,6 +97,7 @@
           <% }); %>
         </div>
       </div>
+      
     </script>
 
     <!-- showing the recipe details -->
@@ -136,7 +138,17 @@
         </div>
       </div>
     </script>
-    
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center" id="pagination">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+        <li class="page-item">
+          <a class="page-link disabled" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
     <script type="module" src="app.js"></script>
   </body>
 </html>

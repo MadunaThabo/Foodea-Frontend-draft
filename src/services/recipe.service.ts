@@ -183,6 +183,7 @@ export class RecipeService extends Model{
     }
 
     async searchRecipe(query: string): Promise<IRecipe[]> {
+        console.log('searching ', query)
         const url = `https://localhost:7008/api/Recipes/search/${query}`;
         const response = await fetch(url, {
           method: "GET",
