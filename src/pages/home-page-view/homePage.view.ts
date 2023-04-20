@@ -1,13 +1,12 @@
-import Backbone, { Router } from 'backbone';
-import { IRecipe, RecipeService } from './src/services/recipe.service';
-import { RecipeCollection } from './src/collection/recipe.collection';
-import $, { event } from 'jquery';
+import $ from 'jquery';
 import _ from 'underscore';
-import { RecipeViewPage } from './src/pages/recipe-view-page/recipe-view-page';
-import { AppRouter } from './app.router';
+import { Router, View } from 'backbone';
+import { RecipeCollection } from '../../collection/recipe.collection';
+import { IRecipe } from '../../interfaces/recipe.interface';
+import { RecipeService } from '../../services/recipe.service';
+import { RecipeViewPage } from '../recipe-view-page/recipe-view-page';
 
-export class HomePageView extends Backbone.View {
-  router: Backbone.Router;
+export class HomePageView extends View {
   collection!: RecipeCollection;
   searchString: string = '';
   recipesForTheDay: IRecipe[] = [];
@@ -19,85 +18,41 @@ export class HomePageView extends Backbone.View {
   selectedPage = 1;
 
   constructor(options?: any) {
+    console.log('Constructing Home Page')
     super(options);
     this.recipeService = new RecipeService();
     this.$el = $('#recipe-cards');
-    console.log('view1');
     this.initialize();
-    this.router = options.router;
-    console.log('view2');
   }
 
-  initialize() {
+  async initialize() {
     //get recipes for the day
-    this.getRandomRecipe(72);
-    //set the event listener for home button
-    let homeButton = document.getElementById('buttonHomePage');
-    if (homeButton) {
-      homeButton.addEventListener('click', async () => {
-        this.goToHomePage();
-      });
-    }
-    //set event listener for random recipe button
-    let randomButton = document.getElementById('buttonRandomRecipe');
-    if (randomButton) {
-      randomButton.addEventListener('click', async () => {
-        await this.getRandomRecipe(1);
-      });
-    }
-    //set event listener for random recipe button
-    let searchButton = document.getElementById('buttonSearchRecipe');
-    if (searchButton) {
-      searchButton.addEventListener('click', async (event: MouseEvent) => {
-        await this.searchRecipe(event);
-      });
-    }
-    // set event listener for ingredients link
-    let ingredientsLink = document.getElementById('ingredientsLink');
-    if (ingredientsLink) {
-      ingredientsLink.addEventListener('click', (event: MouseEvent) => {
-        event.preventDefault();
-        this.router.navigate('/ingredients', {trigger: true});
-      });
-    }
+    this.recipesToShow = this.recipesForTheDay = await this.getRandomRecipe(72);
+    this.collection =  new RecipeCollection(this.recipesForTheDay);
+    this.render();
   }
 
-  async getRandomRecipe(n: number) {
-    if(n == 1){
-      console.log('getRandomRecipe', n);
-      let recipes: IRecipe[] = []
-      if(this.recipeService != null){
-        this.recipesToShow = this.recipesForTheDay = await this.recipeService.getRandomRecipe(n);
-      }
-      else{
-        console.log('recipeService is null');
-      }
-      console.log('recipes view what what', recipes);
-      this.openRecipeView(null,recipes[0]);
-      console.log('recipes view what what part 2 ^_____^');
+  async getRandomRecipe(n: number): Promise<IRecipe[]> {
+    console.log('getRandomRecipe', n);
+    if(this.recipeService != null){
+      return await this.recipeService.getRandomRecipe(n);
     }
     else{
-      console.log('getRandomRecipe', n);
-      if(this.recipeService != null){
-        this.recipesToShow = this.recipesForTheDay = await this.recipeService.getRandomRecipe(n);
-      }
-      let recipeCollection = new RecipeCollection(this.recipesForTheDay);
-      this.collection = recipeCollection;
-      
-      this.render();
-      this.updatePagination();
-      
+      console.error('recipeService is null');
+      return [];
     }
   }
 
+ 
   events(): Backbone.EventsHash {
     return {
+      'click #buttonRandomRecipe': 'openARandomRecipe',
       'click .card': 'openRecipeView',
-      // 'click #buttonRandom': 'getRandomRecipe',
       'click #buttonHomePage': 'goToHomePage',
-      'click #buttonSearchRecipe': 'searchRecipe'
+      'click #buttonSearchRecipe': 'searchRecipe',
     };
   }
+
 
   async searchRecipe(event: MouseEvent) {
     event.preventDefault();
@@ -122,6 +77,41 @@ export class HomePageView extends Backbone.View {
     }
   }
 
+  async openARandomRecipe(event: Event) {
+    console.log('openARandomRecipe', 1);
+    const currentTarget = (event as any).currentTarget;
+      if (!currentTarget) return;
+    let recipes: IRecipe[] = []
+    if(this.recipeService != null){
+      recipes = await this.getRandomRecipe(1);
+    }
+    else{
+      console.error('recipeService is null');
+      this.recipeService = new RecipeService();
+      recipes = await this.getRandomRecipe(1);
+    }
+    this.openRecipeView(null,recipes[0]);
+    console.log('recipes', recipes);
+  }
+
+  openRecipeView(event: Event| null, recipeInput: IRecipe| null = null) {
+    if(recipeInput){
+      console.log('recipeInput', recipeInput);
+      let recipeCollection = new RecipeCollection([recipeInput]);
+      let recipeView = new RecipeViewPage(recipeCollection.at(0));
+      recipeView.render();
+    }
+    else{
+      const currentTarget = (event as any).currentTarget;
+      if (!currentTarget) return;
+      let recipeId = $(currentTarget).attr('id') as string;
+      let recipe = this.collection.get(recipeId);
+      if (!recipe) return;
+      console.log('recipe', recipe.attributes);
+      let recipeView = new RecipeViewPage(recipe);
+      recipeView.render();
+    }
+  }
   goToHomePage(event: Event | null = null) {
     console.log('goToHomePage');
     let recipeCardsContainer = document.getElementById('recipe-cards');
@@ -185,11 +175,10 @@ export class HomePageView extends Backbone.View {
       pagination.appendChild(nextPage);
   
       // set first page as active
-      this.updateActivePage(currentPage);
+      // this.updateActivePage(currentPage);
     }
   }
 
-  // function to update active page
    updateActivePage(currentPage: number) {
     let pagination = document.getElementById('pagination');
     if (pagination) {
@@ -214,26 +203,7 @@ export class HomePageView extends Backbone.View {
     this.render();
   }
   
-
-  openRecipeView(event: Event| null, recipeInput: IRecipe| null = null) {
-    if(recipeInput){
-      console.log('recipeInput', recipeInput);
-      let recipeCollection = new RecipeCollection([recipeInput]);
-      let recipeView = new RecipeViewPage(recipeCollection.at(0));
-      recipeView.render();
-    }
-    else{
-      const currentTarget = (event as any).currentTarget;
-      if (!currentTarget) return;
-      let recipeId = $(currentTarget).attr('id') as string;
-      let recipe = this.collection.get(recipeId);
-      if (!recipe) return;
-      console.log('recipe', recipe.attributes);
-      let recipeView = new RecipeViewPage(recipe);
-      recipeView.render();
-    }
-    
-  }
+  
 
   render() {
     let recipeTemplate = _.template($('#recipe-card-template').html());
@@ -241,8 +211,8 @@ export class HomePageView extends Backbone.View {
     let recipeContainer = document.getElementById('recipe-cards');
     if (recipeContainer) recipeContainer.innerHTML = recipeHTML;
     this.delegateEvents();
-    this.$el.on('click', '.card img', this.openRecipeView.bind(this));
-    // this.$el.on('click', '#buttonSearchRecipe', this.searchRecipe.bind(this));
+    // this.$el.on('click', '.card img', this.openRecipeView.bind(this));
+    this.updatePagination();
     return this;
   }
 
@@ -250,10 +220,3 @@ export class HomePageView extends Backbone.View {
     return (inputString.length > maxLength) ? inputString.slice(0, maxLength - 1) + '…' : inputString;
   }
 }
-
-$(document).ready(function () {
-  const router = new AppRouter();
-  let home = new HomePageView({router: router});
-  home.delegateEvents();
-  Backbone.history.start({ pushState: true });
-});

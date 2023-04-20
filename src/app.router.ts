@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import { IngredientsPageView } from './src/pages/recipe-view-page/ingredients-page';
+import { IngredientsPageView } from './pages/recipe-view-page/ingredients-page';
 
 export class AppRouter extends Backbone.Router {
     constructor() {
@@ -16,15 +16,15 @@ export class AppRouter extends Backbone.Router {
 
     attachEventListeners() {
         console.log('Attaching event listeners');
-        let ingredientsLink = document.getElementById('ingredientsLink');
-        if (ingredientsLink) {
-            ingredientsLink.addEventListener('click', (event) => {
-                event.preventDefault();
-                this.navigate('ingredients', {trigger: true});
-            });
-        } else {
-            console.warn('Could not find "ingredientsLink" element.');
-        }
+        // let ingredientsLink = document.getElementById('ingredientsLink');
+        // if (ingredientsLink) {
+        //     ingredientsLink.addEventListener('click', (event) => {
+        //         event.preventDefault();
+        //         this.navigate('ingredients', {trigger: true});
+        //     });
+        // } else {
+        //     console.warn('Could not find "ingredientsLink" element.');
+        // }
     }
 
     ingredients() {
