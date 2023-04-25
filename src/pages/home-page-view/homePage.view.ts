@@ -46,7 +46,7 @@ export class HomePageView extends View {
  
   events(): Backbone.EventsHash {
     return {
-      'click #buttonRandomRecipe': 'openARandomRecipe',
+      'click .buttonRandomRecipe': 'openARandomRecipe',
       'click .card': 'openRecipeView',
       'click #buttonHomePage': 'goToHomePage',
       'click #buttonSearchRecipe': 'searchRecipe',
@@ -175,7 +175,7 @@ export class HomePageView extends View {
       pagination.appendChild(nextPage);
   
       // set first page as active
-      // this.updateActivePage(currentPage);
+      this.updateActivePage(currentPage);
     }
   }
 
