@@ -31,7 +31,7 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" id="buttonSearchRecipe" type="submit">Search</button>
+          <button class="btn btn-primary" id="buttonSearchRecipe" type="submit">Search</button>
         </form>
       </div>
     </nav>
@@ -73,8 +73,36 @@
       <div class="column">
         <h2>Your Ingredients</h2>
         <p>Get Recipes based on the ingredients you have.</p>
-        <button class="btn btn-primary">Fridge</button>
+        <button class="btn btn-primary" id="buttonRecipes">Fridge</button>
       </div>
+    </div>
+    
+    <!-- search food by ingredients -->
+    <div class="ingredient-search-container container">
+    <div class="row mb-3">
+      <div class="col-8">
+        <input type="text" class="form-control" id="ingredientSearchBar" placeholder="Search for ingredient...">
+      </div>
+      <div class="col-4 d-flex justify-content-center">
+        <button class="btn btn-primary" id="buttonAddIngredient">Add Ingredient</button>
+      </div>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <ul class="list-group" id="selected-ingredients">
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 d-flex justify-content-center">
+        <button class="btn btn-danger" id="remove-all-btn"><i class="bi bi-trash"></i> Remove All</button>
+      </div>
+      <div class="col-6 d-flex justify-content-center">
+        <button class="btn btn-primary" id="get-recipes-btn">Get Recipes</button>
+      </div>
+      <div class="w-100"></div>
+    </div>
     </div>
     
     

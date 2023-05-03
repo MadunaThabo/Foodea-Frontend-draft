@@ -12,6 +12,7 @@ export class HomePageView extends View {
   recipesForTheDay: IRecipe[] = [];
   searchedRecipes: IRecipe[] = [];
   recipesToShow: IRecipe[] = [];
+  ingredients: string[] = [];
   recipeService: RecipeService | null = null;
   tempRecipe: IRecipe | null = null;
   $el: JQuery<HTMLElement>;
@@ -30,7 +31,73 @@ export class HomePageView extends View {
     this.recipesToShow = this.recipesForTheDay = await this.getRandomRecipe(72);
     this.collection =  new RecipeCollection(this.recipesForTheDay);
     this.render();
+    this.addEvents();
   }
+
+  addEvents(){
+    let buttonRandomRecipe = document.getElementById('buttonRandomRecipe');
+    if (buttonRandomRecipe) {
+      buttonRandomRecipe.onclick = (event) => {
+        this.openARandomRecipe(event);
+      };
+    }
+
+    let searchButton = document.getElementById('buttonSearchRecipe');
+    if (searchButton) {
+      searchButton.onclick = (event) => {
+        this.searchRecipe(event);
+      };
+    }
+
+    let buttonGetRecipeByIngredients = document.getElementById('get-recipes-btn');
+    if(buttonGetRecipeByIngredients){
+      buttonGetRecipeByIngredients.onclick = (event) => {
+        this.getRecipesByIngredients(event);
+      };
+    }
+
+    let homeButton = document.getElementById('buttonHomePage');
+    if (homeButton) {
+      homeButton.addEventListener('click', async () => {
+        this.goToHomePage();
+      });
+    }
+
+    let addIngredientBtn = document.getElementById('buttonAddIngredient');
+    let ingredientSearchBar = document.getElementById('ingredientSearchBar') as HTMLInputElement;
+    if(addIngredientBtn && ingredientSearchBar){
+      addIngredientBtn.onclick = (event)=> {
+        let ingredient = ingredientSearchBar.value.trim();
+        if (ingredient !== '') {
+          this.ingredients.push(ingredient);
+          this.displayIngredients();
+          ingredientSearchBar.value = '';
+        }
+      };
+    }
+  }
+
+  displayIngredients() {
+    let selectedIngredients = document.getElementById('selected-ingredients');
+    if (!selectedIngredients) return;
+    selectedIngredients.innerHTML = '';
+    for (const ingredient of this.ingredients) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.textContent = ingredient;
+      const removeIngredientBtn = document.createElement('button');
+      removeIngredientBtn.className = 'btn btn-danger btn-sm float-right remove-ingredient-btn';
+      removeIngredientBtn.textContent = 'X';
+      removeIngredientBtn.onclick = (event) => {
+        event.preventDefault();
+        this.ingredients = this.ingredients.filter((ing) => ing !== ingredient);
+        this.displayIngredients();
+      };
+      li.appendChild(removeIngredientBtn);
+      selectedIngredients.appendChild(li);
+    }
+  }
+
 
   async getRandomRecipe(n: number): Promise<IRecipe[]> {
     console.log('getRandomRecipe', n);
@@ -46,7 +113,7 @@ export class HomePageView extends View {
  
   events(): Backbone.EventsHash {
     return {
-      'click .buttonRandomRecipe': 'openARandomRecipe',
+      'click #buttonRandomRecipe .button': 'openARandomRecipe',
       'click .card': 'openRecipeView',
       'click #buttonHomePage': 'goToHomePage',
       'click #buttonSearchRecipe': 'searchRecipe',
@@ -77,7 +144,21 @@ export class HomePageView extends View {
     }
   }
 
-  async openARandomRecipe(event: Event) {
+  async getRecipesByIngredients(event: MouseEvent) {
+    let ingredients = '';
+    event.preventDefault();
+    for (const ingredient of this.ingredients) {
+      ingredients += ingredient + ',';
+    }
+    if(this.recipeService == null) return;
+    this.searchedRecipes = await this.recipeService.searchRecipeByIngredients(ingredients);
+    console.log('searchedRecipes', this.searchRecipe);
+    this.collection = new RecipeCollection(this.searchedRecipes);
+    this.render();
+  }
+
+  async openARandomRecipe(event: MouseEvent) {
+    event.preventDefault();
     console.log('openARandomRecipe', 1);
     const currentTarget = (event as any).currentTarget;
       if (!currentTarget) return;
@@ -200,7 +281,7 @@ export class HomePageView extends View {
     let pageNumber = $(currentTarget).html() as string;
     this.selectedPage = parseInt(pageNumber);
     this.collection = new RecipeCollection(this.recipesToShow.slice((this.selectedPage - 1) * pageLimit, this.selectedPage * pageLimit));
-    this.render();
+    this.render();   
   }
   
   
