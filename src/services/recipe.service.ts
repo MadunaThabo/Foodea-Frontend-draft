@@ -51,6 +51,7 @@ export class RecipeService extends Model{
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
     });
     if (!response.ok) {
@@ -87,6 +88,7 @@ export class RecipeService extends Model{
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   
@@ -106,6 +108,7 @@ export class RecipeService extends Model{
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   
