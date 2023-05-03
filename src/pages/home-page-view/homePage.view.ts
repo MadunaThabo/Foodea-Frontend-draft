@@ -35,6 +35,7 @@ export class HomePageView extends View {
   }
 
   addEvents(){
+    //get random recipes
     let buttonRandomRecipe = document.getElementById('buttonRandomRecipe');
     if (buttonRandomRecipe) {
       buttonRandomRecipe.onclick = (event) => {
@@ -42,6 +43,7 @@ export class HomePageView extends View {
       };
     }
 
+    //search recipes
     let searchButton = document.getElementById('buttonSearchRecipe');
     if (searchButton) {
       searchButton.onclick = (event) => {
@@ -49,13 +51,15 @@ export class HomePageView extends View {
       };
     }
 
-    let buttonGetRecipeByIngredients = document.getElementById('get-recipes-btn');
+    //get recipes by ingredients
+    let buttonGetRecipeByIngredients = document.getElementById('getRecipesByIngredientButton');
     if(buttonGetRecipeByIngredients){
       buttonGetRecipeByIngredients.onclick = (event) => {
         this.getRecipesByIngredients(event);
       };
     }
 
+    //Go to home page
     let homeButton = document.getElementById('buttonHomePage');
     if (homeButton) {
       homeButton.addEventListener('click', async () => {
@@ -63,6 +67,7 @@ export class HomePageView extends View {
       });
     }
 
+    //Add ingredient
     let addIngredientBtn = document.getElementById('buttonAddIngredient');
     let ingredientSearchBar = document.getElementById('ingredientSearchBar') as HTMLInputElement;
     if(addIngredientBtn && ingredientSearchBar){
@@ -75,10 +80,19 @@ export class HomePageView extends View {
         }
       };
     }
+
+    //Clear ingredients
+    let clearIngredientsBtn = document.getElementById('buttonClearIngredients');
+    if(clearIngredientsBtn){
+      clearIngredientsBtn.onclick = (event)=> {
+        this.ingredients = [];
+        this.displayIngredients();
+      };
+    }
   }
 
   displayIngredients() {
-    let selectedIngredients = document.getElementById('selected-ingredients');
+    let selectedIngredients = document.getElementById('selectedIngredients');
     if (!selectedIngredients) return;
     selectedIngredients.innerHTML = '';
     for (const ingredient of this.ingredients) {

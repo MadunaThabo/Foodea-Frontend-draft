@@ -81,29 +81,29 @@
     <div class="ingredient-search-container container">
     <div class="row mb-3">
       <div class="col-8">
-        <input type="text" class="form-control" id="ingredientSearchBar" placeholder="Search for ingredient...">
+        <input type="search" class="form-control" id="ingredientSearchBar" placeholder="Search for ingredient...">
       </div>
       <div class="col-4 d-flex justify-content-center">
         <button class="btn btn-primary" id="buttonAddIngredient">Add Ingredient</button>
       </div>
     </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <ul class="list-group" id="selected-ingredients">
-        </ul>
-      </div>
-    </div>
-    <div class="row">
+    </div><div class="row">
       <div class="col-6 d-flex justify-content-center">
-        <button class="btn btn-danger" id="remove-all-btn"><i class="bi bi-trash"></i> Remove All</button>
+        <button class="btn btn-danger" id="buttonClearIngredients"><i class="bi bi-trash"></i> Remove All</button>
       </div>
       <div class="col-6 d-flex justify-content-center">
-        <button class="btn btn-primary" id="get-recipes-btn">Get Recipes</button>
+        <button class="btn btn-primary" id="getRecipesByIngredientButton">Get Recipes</button>
       </div>
       <div class="w-100"></div>
     </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+        <ul class="list-group" id="selectedIngredients">
+        </ul>
+      </div>
+    </div>
+    
     
     
     <!-- card for recipe of the day -->
