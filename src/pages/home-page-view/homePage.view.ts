@@ -24,14 +24,30 @@ export class HomePageView extends View {
     this.recipeService = new RecipeService();
     this.$el = $('#recipe-cards');
     this.initialize();
+    this.hideLoader();
   }
 
   async initialize() {
     //get recipes for the day
-    this.recipesToShow = this.recipesForTheDay = await this.getRandomRecipe(72);
+    this.showLoader();
+    this.recipesToShow = this.recipesForTheDay = await this.getRandomRecipe(1);
+    // this.hideLoader();
     this.collection =  new RecipeCollection(this.recipesForTheDay);
     this.render();
+    this.updatePagination(this.recipesForTheDay);
+    this.triggerFirstPage();
+    this.updateActivePage(1);
     this.addEvents();
+    this.hideLoader();
+    this.hideIngredientBar();
+  }
+
+  triggerFirstPage(){
+    //trigger showPage 1
+    let page1 = document.getElementById('page1') as HTMLAnchorElement;
+    if(page1){
+      page1.click();
+    }
   }
 
   addEvents(){
@@ -47,7 +63,9 @@ export class HomePageView extends View {
     let searchButton = document.getElementById('buttonSearchRecipe');
     if (searchButton) {
       searchButton.onclick = (event) => {
+        this.showLoader();
         this.searchRecipe(event);
+        // this.hideLoader();
       };
     }
 
@@ -63,6 +81,21 @@ export class HomePageView extends View {
     let homeButton = document.getElementById('buttonHomePage');
     if (homeButton) {
       homeButton.addEventListener('click', async () => {
+        this.goToHomePage();
+      });
+    }
+
+    //Go to home page
+    let websiteNameElement = document.getElementById('websiteName');
+    if (websiteNameElement) {
+      websiteNameElement.addEventListener('click', async () => {
+        this.goToHomePage();
+      });
+    }
+    
+    let buttonBackToRecipes = document.getElementById('buttonBackToRecipes');
+    if (buttonBackToRecipes) {
+      buttonBackToRecipes.addEventListener('click', async () => {
         this.goToHomePage();
       });
     }
@@ -89,6 +122,25 @@ export class HomePageView extends View {
         this.displayIngredients();
       };
     }
+
+    //On fridge click
+    let buttonShowIngredientSearch = document.getElementById('buttonShowIngredientSearch');
+    if(buttonShowIngredientSearch){
+      buttonShowIngredientSearch.onclick = (event)=> {
+        this.showIngredientBar();
+      };
+    }
+
+    //change page
+    this.$el.on('click', '.page-link', (event) => {
+      event.preventDefault();
+      const page = $(event.currentTarget).data('page');
+      if (page) {
+        this.selectedPage = page;
+        this.updateActivePage(page);
+        this.render();
+      }
+    });
   }
 
   displayIngredients() {
@@ -136,30 +188,73 @@ export class HomePageView extends View {
 
 
   async searchRecipe(event: MouseEvent) {
+    //TODO: fix paginattion for search
     event.preventDefault();
     console.log('searchRecipe');
+    this.showLoader();
     let searchInput = document.getElementById('searchInput') as HTMLInputElement;
     console.log('searchInput', searchInput);
     if (searchInput) {
       if(searchInput.value == ''){
         console.log('searchInput.value', searchInput.value);
+        this.recipesToShow = this.recipesForTheDay;
         this.collection = new RecipeCollection(this.recipesForTheDay);
-        this.updatePagination();
         this.render();
+        this.updatePagination(this.recipesForTheDay);
+        this.updateActivePage(1);
+        this.triggerFirstPage();
+        this.hideLoader();
       }
       else{
         this.searchString = searchInput.value;
         if(this.recipeService == null) return;
-        this.searchedRecipes = await this.recipeService.searchRecipe(this.searchString);
+        this.recipesToShow = this.searchedRecipes = await this.recipeService.searchRecipe(this.searchString);
+        this.showLoader();
         console.log('searchedRecipes', this.searchedRecipes);
         this.collection = new RecipeCollection(this.searchedRecipes);
         this.render();
+        this.updatePagination(this.searchedRecipes);
+        this.updateActivePage(1);
+        this.triggerFirstPage();
+        // this.hideLoader();
       }
+    }
+    
+  }
+
+  showLoader() {
+    console.log('showLoader');
+    let loader = document.getElementById('loaderContainer');
+    if (loader) {
+      loader.hidden = false;
+    }
+  }
+
+  hideLoader() {
+    console.log('hideLoader');
+    let loader = document.getElementById('loaderContainer');
+    if (loader) {
+      loader.hidden = true;
+    }
+  }
+
+  showIngredientBar() {
+    let ingredientSearchContainer = document.getElementById('ingredientSearchContainer');
+    if (ingredientSearchContainer) {
+      ingredientSearchContainer.hidden = false;
+    }
+  }
+
+  hideIngredientBar() {
+    let ingredientSearchContainer = document.getElementById('ingredientSearchContainer');
+    if (ingredientSearchContainer) {
+      ingredientSearchContainer.hidden = true;
     }
   }
 
   async getRecipesByIngredients(event: MouseEvent) {
     let ingredients = '';
+    this.showLoader();
     event.preventDefault();
     for (const ingredient of this.ingredients) {
       ingredients += ingredient + ',';
@@ -168,7 +263,12 @@ export class HomePageView extends View {
     this.searchedRecipes = await this.recipeService.searchRecipeByIngredients(ingredients);
     console.log('searchedRecipes', this.searchRecipe);
     this.collection = new RecipeCollection(this.searchedRecipes);
+    this.updatePagination(this.searchedRecipes);
     this.render();
+    this.goToHomePage(event);
+    this.updateActivePage(1);
+    this.triggerFirstPage();
+    
   }
 
   async openARandomRecipe(event: MouseEvent) {
@@ -190,6 +290,8 @@ export class HomePageView extends View {
   }
 
   openRecipeView(event: Event| null, recipeInput: IRecipe| null = null) {
+    this.showLoader();
+    this.hideIngredientBar();
     if(recipeInput){
       console.log('recipeInput', recipeInput);
       let recipeCollection = new RecipeCollection([recipeInput]);
@@ -219,13 +321,13 @@ export class HomePageView extends View {
     }
   }
 
-  updatePagination() {
+  updatePagination(collection: IRecipe[]) {
     let pagination = document.getElementById('pagination');
     if (pagination) {
       pagination.innerHTML = ''; // clear the pagination first
       
       let pageLimit = 12;
-      let totalPages = Math.ceil(this.collection.size() / pageLimit);
+      let totalPages = Math.ceil(collection.length / pageLimit);
       let currentPage = 1;
   
       // create previous button
@@ -245,11 +347,12 @@ export class HomePageView extends View {
         page.classList.add('page-item');
         let pageLink = document.createElement('a');
         pageLink.classList.add('page-link');
+        pageLink.id = 'page' + (i + 1).toString();
         pageLink.innerHTML = (i + 1).toString();
         pageLink.href = '#';
         pageLink.addEventListener('click', (event) => {
           currentPage = i + 1;
-          this.showPage(event, currentPage, pageLimit);
+          this.showPage(event, currentPage, pageLimit,collection);
           this.updateActivePage(currentPage);
         });
         page.appendChild(pageLink);
@@ -282,12 +385,13 @@ export class HomePageView extends View {
         pages[i].classList.remove('active');
         if (i === currentPage) {
           pages[i].classList.add('active');
+          break;
         }
       }
     }
   }
   
-  showPage(event: MouseEvent, currentPage: number, pageLimit: number) {
+  showPage(event: MouseEvent, currentPage: number, pageLimit: number, collection: IRecipe[], list: IRecipe[]| null = null) {
     console.log('showPage');
     event.preventDefault();
     const currentTarget = (event as any).currentTarget;
@@ -295,7 +399,10 @@ export class HomePageView extends View {
     let pageNumber = $(currentTarget).html() as string;
     this.selectedPage = parseInt(pageNumber);
     this.collection = new RecipeCollection(this.recipesToShow.slice((this.selectedPage - 1) * pageLimit, this.selectedPage * pageLimit));
+    // this.updatePagination(collection);
     this.render();   
+    this.updatePagination(collection);
+    this.updateActivePage(1);
   }
   
   
@@ -307,7 +414,7 @@ export class HomePageView extends View {
     if (recipeContainer) recipeContainer.innerHTML = recipeHTML;
     this.delegateEvents();
     // this.$el.on('click', '.card img', this.openRecipeView.bind(this));
-    this.updatePagination();
+    this.hideLoader();
     return this;
   }
 
