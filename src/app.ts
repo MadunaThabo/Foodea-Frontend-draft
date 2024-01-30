@@ -1,19 +1,26 @@
-console.log("The app works");
+console.warn('Application is starting...');
+import { Router } from 'backbone';
+import { HomePageView } from './pages/home-page-view/homePage.view';
+import Backbone from 'backbone';
+import { HomePageController } from './pages/home-page-view/home-page.controller';
 
-import { Model } from 'backbone';
+const router = new Router({
+  routes: {
+    'home': 'loadHomePage',
+    '*path': 'defaultRoute'
+  },
+  // set root for the router
+  root: '/'
+});
 
-class MyModel extends Model {
-  url: any = 'https://localhost:7008/api/users/random';
+router.on('route:loadHomePage', () => {
+  const homePageView = new HomePageView();
+  homePageView.render();
+});
 
-  fetchData() {
-    this.fetch({
-      dataType: 'json'
-    }).then(() => {
-      console.log(this.toJSON());
-    });
-  }
-}
+const homePageController = new HomePageController();
+router.on('route:loadHomePage', homePageController.loadHomePage.bind(homePageController));
 
-const myModel = new MyModel();
-myModel.fetchData();
 
+// Start Backbone history a necessary step for bookmarkable URL's
+Backbone.history.start({ pushState: true }); // enable pushState to remove '#' from URL
